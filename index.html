@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random User</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="wrapper">
+    <div class="img-area">
+        <div class="inner-area">
+            <img
+                    src="https://images.unsplash.com/photo-1484515991647-c5760fcecfc7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fG1lbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
+                    id="photo"
+                    alt="person-pic"/>
+        </div>
+    </div>
+    <div id="name">John Doe</div>
+    <hr class="horizon" />
+    <br>
+    <div class="info">
+        <p>First Name : <span id="first">John</span></p>
+        <p>Last Name : <span id="last">Doe</span></p>
+        <p>Age : <span id="age">22</span></p>
+        <p>Location : <span id="street">Earth</span></p>
+        <p>Phone : <span id="phone">333-333-2222</span></p>
+        <p>Email : <span id="email">test@gmail.com</span></p>
+    </div>
+
+    <button id="btn" onclick="getNewPerson()">Random Person</button>
+</div>
+
+<script>
+    function getNewPerson(){
+        const url = "https://randomuser.me/api/";
+        const req = new XMLHttpRequest();
+        req.open("GET", url, true);
+        console.log(req.status);
+        req.onload = function () {
+            console.log("passed");
+            parseData(this.responseText);
+        }
+        req.send();
+    }
+
+    function parseData(res){
+        const data = JSON.parse(res);
+        const {
+            name: {title, first, last},
+            dob: {age},
+            location: {country, city},
+            phone,
+            email,
+            picture: {large}
+        } = data.results[0];
+        displayData(title, first, last, age, country, city, phone, email, large);
+    }
+
+    function displayData(title, first, last, age, country, city, phone, email, large){
+        document.getElementById("name").textContent = `${title}. ${first} ${last}`;
+        document.getElementById("first").textContent = first;
+        document.getElementById("last").textContent = last;
+        document.getElementById("age").textContent = age;
+        document.getElementById("street").textContent = `${country}, ${city}`;
+        document.getElementById("phone").textContent = phone;
+        document.getElementById("email").textContent = email;
+        document.getElementById("photo").src = large;
+        console.log("Clicked");
+    }
+
+</script>
+</body>
+</html>
